@@ -4,6 +4,7 @@ import { Metronome } from './Metronome'
 import { VideoPlayer, type VideoPlayerHandle } from './VideoPlayer'
 import { BeatCounter } from './BeatCounter'
 import { PracticeTools } from './PracticeTools'
+import { StructureTimeline } from './StructureTimeline'
 
 interface SongModalProps {
   song: Song
@@ -16,6 +17,7 @@ function offsetKey(songId: string) {
 
 export function SongModal({ song, onClose }: SongModalProps) {
   const [currentTime, setCurrentTime] = useState(0)
+  const [duration, setDuration] = useState(0)
   const [offset, setOffset] = useState(() => {
     const stored = localStorage.getItem(offsetKey(song.id))
     return stored ? Number(stored) : song.beatOffset
@@ -122,10 +124,21 @@ export function SongModal({ song, onClose }: SongModalProps) {
           <VideoPlayer
             youtubeId={song.youtubeId}
             onTimeUpdate={setCurrentTime}
-            onDuration={() => {}}
+            onDuration={setDuration}
             onReady={setPlayer}
           />
         </div>
+
+        {song.estructuraReal && duration > 0 && (
+          <div className="mt-4">
+            <StructureTimeline
+              secciones={song.estructuraReal}
+              duracion={duration}
+              currentTime={currentTime}
+              onSeek={(s) => player?.seekTo(s)}
+            />
+          </div>
+        )}
 
         <div className="mt-4">
           <PracticeTools player={player} currentTime={currentTime} />

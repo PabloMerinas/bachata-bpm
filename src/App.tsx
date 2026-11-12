@@ -62,9 +62,17 @@ function App() {
       return true
     })
 
-    if (filters.orden === 'bpm-asc') result.sort((a, b) => a.bpm - b.bpm)
-    else if (filters.orden === 'bpm-desc') result.sort((a, b) => b.bpm - a.bpm)
-    else result.sort((a, b) => a.title.localeCompare(b.title))
+    const porCriterio =
+      filters.orden === 'bpm-asc'
+        ? (a: Song, b: Song) => a.bpm - b.bpm
+        : filters.orden === 'bpm-desc'
+          ? (a: Song, b: Song) => b.bpm - a.bpm
+          : (a: Song, b: Song) => a.title.localeCompare(b.title)
+
+    result.sort((a, b) => {
+      if (!!a.experimental !== !!b.experimental) return a.experimental ? -1 : 1
+      return porCriterio(a, b)
+    })
 
     return result
     // eslint-disable-next-line react-hooks/exhaustive-deps

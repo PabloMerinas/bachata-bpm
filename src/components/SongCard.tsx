@@ -1,5 +1,4 @@
 import type { Song } from '../data/songs'
-import { BeatDot } from './BeatDot'
 
 interface SongCardProps {
   song: Song
@@ -51,7 +50,6 @@ export function SongCard({ song, onOpen, isFavorite, onToggleFavorite }: SongCar
             </div>
             <p className="text-sm text-white/55">{song.artist}</p>
           </div>
-          <BeatDot bpm={song.bpm} running={false} />
         </div>
 
         <div className="flex items-center gap-2 flex-wrap">
