@@ -14,6 +14,7 @@ const initialFilters: FilterState = {
   bpmMin: 100,
   bpmMax: 150,
   soloFavoritos: false,
+  ocultarExperimentales: false,
   orden: 'titulo',
 }
 
@@ -59,6 +60,7 @@ function App() {
       if (filters.artista !== 'todos' && song.artist !== filters.artista) return false
       if (song.bpm < filters.bpmMin || song.bpm > filters.bpmMax) return false
       if (filters.soloFavoritos && !isFavorite(song.id)) return false
+      if (filters.ocultarExperimentales && song.experimental) return false
       return true
     })
 

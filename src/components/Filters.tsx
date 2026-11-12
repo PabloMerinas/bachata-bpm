@@ -10,6 +10,7 @@ export interface FilterState {
   bpmMin: number
   bpmMax: number
   soloFavoritos: boolean
+  ocultarExperimentales: boolean
   orden: Orden
 }
 
@@ -138,6 +139,16 @@ export function Filters({ value, onChange, artistas }: FiltersProps) {
             className="accent-rose-500"
           />
           Solo favoritos ★
+        </label>
+
+        <label className="flex items-center gap-2 self-end pb-1 text-sm text-white/60">
+          <input
+            type="checkbox"
+            checked={value.ocultarExperimentales}
+            onChange={(e) => onChange({ ...value, ocultarExperimentales: e.target.checked })}
+            className="accent-orange-500"
+          />
+          Ocultar experimentales
         </label>
       </div>
     </div>

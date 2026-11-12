@@ -88,9 +88,16 @@ export function SongModal({ song, onClose }: SongModalProps) {
       >
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h2 id="song-modal-title" className="text-xl font-semibold text-white sm:text-2xl">
-              {song.title}
-            </h2>
+            <div className="flex flex-wrap items-center gap-2">
+              <h2 id="song-modal-title" className="text-xl font-semibold text-white sm:text-2xl">
+                {song.title}
+              </h2>
+              {song.experimental && (
+                <span className="rounded-full border border-orange-500/40 bg-orange-500/15 px-2 py-0.5 text-xs font-medium text-orange-300">
+                  Experimental
+                </span>
+              )}
+            </div>
             <p className="text-sm text-white/55 sm:text-base">{song.artist} · {song.genero} · {song.anio}</p>
           </div>
           <div className="flex shrink-0 items-center gap-2">
@@ -156,13 +163,27 @@ export function SongModal({ song, onClose }: SongModalProps) {
             href={song.fuenteBeat.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-full border border-sky-500/30 bg-sky-500/10 px-2.5 py-0.5 text-xs text-sky-300 hover:bg-sky-500/20"
+            className={`rounded-full border px-2.5 py-0.5 text-xs ${
+              song.experimental
+                ? 'border-orange-500/30 bg-orange-500/10 text-orange-300 hover:bg-orange-500/20'
+                : 'border-sky-500/30 bg-sky-500/10 text-sky-300 hover:bg-sky-500/20'
+            }`}
           >
-            Beat real · fuente: {song.fuenteBeat.nombre} ↗
+            Beat {song.experimental ? 'experimental' : 'real'} · fuente: {song.fuenteBeat.nombre} ↗
           </a>
         </div>
 
         <p className="mt-3 text-sm leading-relaxed text-white/70">{song.notaEstilo}</p>
+
+        {song.experimental && (
+          <p className="mt-2 rounded-lg border border-orange-500/20 bg-orange-500/5 px-3 py-2 text-xs text-orange-200/80">
+            ⚠ Experimental: el offset de esta canción no viene de AcousticBrainz (no tiene
+            cobertura por ser posterior a 2022) sino de un análisis propio sobre un clip de 30s de
+            Deezer. En nuestras pruebas este método acierta la mayoría de las veces pero no
+            siempre — ese clip no siempre empieza en el segundo 0 de la canción completa, así que
+            el "1" podría estar mal. Verifícalo de oído con la calibración antes de confiar en él.
+          </p>
+        )}
 
         {song.notaCalibrado && (
           <p className="mt-2 rounded-lg border border-amber-500/20 bg-amber-500/5 px-3 py-2 text-xs text-amber-200/80">
@@ -173,12 +194,12 @@ export function SongModal({ song, onClose }: SongModalProps) {
         <p className="mt-4 text-xs text-white/35">
           El BPM y el instante inicial del "1" (offset) son datos reales: el BPM viene citado de
           una base de datos pública de audio y el offset se calculó analizando el beat real de la
-          grabación con AcousticBrainz/Essentia (enlaces arriba) — no es una suposición a 0.
-          Aun así puede no encajar exactamente con el vídeo embebido si usa una mezcla o edición
-          distinta a la analizada; por eso la calibración manual sigue disponible. El estilo de
-          rotura (derecho/majao) es una sugerencia pedagógica, no una propiedad medible del audio
-          — contrástala siempre con tu instructor. La reproducción se hace vía YouTube, el audio
-          no se aloja en esta web.
+          grabación (AcousticBrainz, o análisis propio en las marcadas como experimentales — enlaces
+          arriba) — no es una suposición a 0. Aun así puede no encajar exactamente con el vídeo
+          embebido si usa una mezcla o edición distinta a la analizada; por eso la calibración
+          manual sigue disponible. El estilo de rotura (derecho/majao) es una sugerencia
+          pedagógica, no una propiedad medible del audio — contrástala siempre con tu instructor.
+          La reproducción se hace vía YouTube, el audio no se aloja en esta web.
         </p>
       </div>
     </div>

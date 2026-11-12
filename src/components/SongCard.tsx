@@ -39,7 +39,17 @@ export function SongCard({ song, onOpen, isFavorite, onToggleFavorite }: SongCar
       >
         <div className="flex items-start justify-between gap-3 pr-6">
           <div>
-            <h3 className="text-base font-semibold text-white leading-snug">{song.title}</h3>
+            <div className="flex items-center gap-1.5">
+              <h3 className="text-base font-semibold text-white leading-snug">{song.title}</h3>
+              {song.experimental && (
+                <span
+                  title="Beat calculado con un clip de 30s, puede estar desalineado"
+                  className="rounded-full border border-orange-500/40 bg-orange-500/15 px-1.5 py-0.5 text-[10px] font-medium text-orange-300"
+                >
+                  Experimental
+                </span>
+              )}
+            </div>
             <p className="text-sm text-white/55">{song.artist}</p>
           </div>
           <BeatDot bpm={song.bpm} running={false} />

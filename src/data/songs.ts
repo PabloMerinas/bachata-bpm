@@ -22,6 +22,13 @@ export interface Song {
   fuenteBeat: Fuente
   /** Aviso cuando el único análisis disponible es de una mezcla/versión distinta a la del vídeo embebido. */
   notaCalibrado?: string
+  /**
+   * true si el beat viene de nuestro propio análisis sobre un clip de 30s de Deezer
+   * (en vez de AcousticBrainz, que analiza la canción completa). Ese clip no siempre empieza
+   * en el segundo 0 de la canción, así que el offset puede estar mal — por eso se marca
+   * explícitamente como experimental en vez de darlo por bueno.
+   */
+  experimental?: boolean
   genero: string
   anio: number
   estilo: EstiloRotura
@@ -285,5 +292,69 @@ export const songs: Song[] = [
     estilo: 'derecho',
     notaEstilo: 'Letra muy popular en pista social; patrón de guira directo, ideal para derecho a tempo medio-alto.',
     nivel: 'intermedio',
+  },
+  {
+    id: 'la-bachata',
+    title: 'La Bachata',
+    artist: 'Manuel Turizo',
+    youtubeId: 'A7m8lQOMz1A',
+    bpm: 125,
+    beatOffset: 0.38,
+    fuenteBpm: { nombre: 'Tunebat', url: 'https://tunebat.com/Info/La-Bachata-Manuel-Turizo/5ww2BF9slyYgNOk37BlC4u' },
+    fuenteBeat: { nombre: 'Análisis propio sobre clip de 30s (Deezer)', url: 'https://www.deezer.com/track/1753549417' },
+    experimental: true,
+    genero: 'Bachata moderna / pop',
+    anio: 2022,
+    estilo: 'majao',
+    notaEstilo: 'Superéxito global de 2022 con producción muy pop; el fraseo relajado se presta a romper majao.',
+    nivel: 'principiante',
+  },
+  {
+    id: 'solo-conmigo',
+    title: 'Solo Conmigo',
+    artist: 'Romeo Santos',
+    youtubeId: '69ppp5Ipook',
+    bpm: 123,
+    beatOffset: 0.12,
+    fuenteBpm: { nombre: 'Tunebat', url: 'https://tunebat.com/Info/Solo-Conmigo-Romeo-Santos/22iCMlT0xYryKNnz4X5Vwn' },
+    fuenteBeat: { nombre: 'Análisis propio sobre clip de 30s (Deezer)', url: 'https://www.deezer.com/track/1893035937' },
+    experimental: true,
+    genero: 'Bachata moderna',
+    anio: 2022,
+    estilo: 'majao',
+    notaEstilo: 'Bachata lenta y sensual de "Fórmula, Vol. 3"; el fraseo pausado se presta a majao.',
+    nivel: 'intermedio',
+  },
+  {
+    id: 'calumnia',
+    title: 'Calumnia',
+    artist: 'Carlos Rivera & Prince Royce',
+    youtubeId: '7I5jAaO03pk',
+    bpm: 140,
+    beatOffset: 0.39,
+    fuenteBpm: { nombre: 'Beatsource', url: 'https://www.beatsource.com/release/calumnia/1955440' },
+    fuenteBeat: { nombre: 'Análisis propio sobre clip de 30s (Deezer)', url: 'https://www.deezer.com/track/2678656662' },
+    experimental: true,
+    genero: 'Bachata moderna',
+    anio: 2024,
+    estilo: 'derecho',
+    notaEstilo: 'Colaboración reciente con tempo rápido y acento muy marcado: tiende a derecho.',
+    nivel: 'avanzado',
+  },
+  {
+    id: 'clavaito',
+    title: 'Clavaíto',
+    artist: 'Chanel & Abraham Mateo',
+    youtubeId: 'RW58hNjQ_Bw',
+    bpm: 133,
+    beatOffset: 0.15,
+    fuenteBpm: { nombre: 'Tunebat/Beatsource', url: 'https://www.beatsource.com/release/clavaito/1600022' },
+    fuenteBeat: { nombre: 'Análisis propio sobre clip de 30s (Deezer)', url: 'https://www.deezer.com/track/2239757117' },
+    experimental: true,
+    genero: 'Bachata pop',
+    anio: 2023,
+    estilo: 'majao',
+    notaEstilo: 'Producción pop muy comercial (Eurovisión 2023-adyacente); fraseo con mucho aire, se presta a majao.',
+    nivel: 'principiante',
   },
 ]
