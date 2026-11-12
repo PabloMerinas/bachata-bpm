@@ -15,6 +15,10 @@ const ITEMS = [
     title: '¿Cómo uso el contador 1-8?',
     body: 'Abre una canción y dale a reproducir en YouTube: el número grande arranca ya calibrado con el primer beat real detectado por un análisis de audio (AcousticBrainz), no con una suposición a 0. Si tu vídeo usa otra mezcla y el "1" no encaja del todo, ajústalo con los botones de ±0.05s — queda guardado para esa canción, y puedes restablecer el valor real cuando quieras.',
   },
+  {
+    title: '¿El tempo se mantiene igual toda la canción?',
+    body: 'Lo comprobamos de verdad: analizamos cada beat real de la canción completa (no solo el primero) y en varias encontramos que la intro o el final tienen un tempo ligeramente distinto al resto. Recalibramos el punto de partida usando la parte estable de cada canción (saltando esa intro) para que el contador no arrastre ese error — pero en los últimos segundos de outro, algunas canciones pueden desajustarse un poco igualmente.',
+  },
 ]
 
 export function AboutSection() {
