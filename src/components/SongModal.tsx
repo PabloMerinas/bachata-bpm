@@ -178,10 +178,10 @@ export function SongModal({ song, onClose }: SongModalProps) {
         {song.experimental && (
           <p className="mt-2 rounded-lg border border-orange-500/20 bg-orange-500/5 px-3 py-2 text-xs text-orange-200/80">
             ⚠ Experimental: el offset de esta canción no viene de AcousticBrainz (no tiene
-            cobertura por ser posterior a 2022) sino de un análisis propio sobre un clip de 30s de
-            Deezer. En nuestras pruebas este método acierta la mayoría de las veces pero no
-            siempre — ese clip no siempre empieza en el segundo 0 de la canción completa, así que
-            el "1" podría estar mal. Verifícalo de oído con la calibración antes de confiar en él.
+            cobertura por ser posterior a 2022) sino de un análisis de audio propio nuestro. En
+            nuestras pruebas este método acierta la mayoría de las veces pero no siempre — el
+            detalle de qué se analizó exactamente está debajo. Verifícalo de oído con la
+            calibración antes de confiar en él.
           </p>
         )}
 
