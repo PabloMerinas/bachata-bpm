@@ -12,10 +12,15 @@ export interface Song {
   youtubeId: string
   /** BPM medido por análisis de audio real (AcousticBrainz/Essentia), redondeado para mostrar. */
   bpm: number
-  /** Primer beat detectado por el análisis de audio real, en segundos. Punto de partida real del contador, no una suposición. undefined si no hay análisis disponible para esta canción. */
-  beatOffset?: number
+  /**
+   * Primer beat detectado por análisis de audio real (AcousticBrainz/Essentia), en segundos.
+   * Campo obligatorio a propósito: solo entran en el catálogo canciones con este dato verificado,
+   * nunca una suposición a 0.
+   */
+  beatOffset: number
   fuenteBpm: Fuente
-  fuenteBeat?: Fuente
+  fuenteBeat: Fuente
+  /** Aviso cuando el único análisis disponible es de una mezcla/versión distinta a la del vídeo embebido. */
   notaCalibrado?: string
   genero: string
   anio: number
@@ -280,19 +285,5 @@ export const songs: Song[] = [
     estilo: 'derecho',
     notaEstilo: 'Letra muy popular en pista social; patrón de guira directo, ideal para derecho a tempo medio-alto.',
     nivel: 'intermedio',
-  },
-  {
-    id: 'la-bachata',
-    title: 'La Bachata',
-    artist: 'Manuel Turizo',
-    youtubeId: 'A7m8lQOMz1A',
-    bpm: 125,
-    fuenteBpm: { nombre: 'Tunebat', url: 'https://tunebat.com/Info/La-Bachata-Manuel-Turizo/5ww2BF9slyYgNOk37BlC4u' },
-    notaCalibrado: 'No encontramos esta canción en la base de datos de beats reales (AcousticBrainz): el contador arranca en 0:00 sin verificar — calíbralo a oído con los botones de ±0.05s.',
-    genero: 'Bachata moderna / pop',
-    anio: 2022,
-    estilo: 'majao',
-    notaEstilo: 'Superéxito global de 2022 con producción muy pop; el fraseo relajado se presta a romper majao.',
-    nivel: 'principiante',
   },
 ]
