@@ -3,7 +3,6 @@ import { loadYouTubeApi } from '../lib/youtube'
 
 export interface VideoPlayerHandle {
   seekTo: (seconds: number) => void
-  setPlaybackRate: (rate: number) => void
   getCurrentTime: () => number
 }
 
@@ -38,7 +37,6 @@ export function VideoPlayer({ youtubeId, onTimeUpdate, onDuration, onReady }: Vi
 
             onReady?.({
               seekTo: (seconds: number) => playerRef.current?.seekTo(seconds, true),
-              setPlaybackRate: (rate: number) => playerRef.current?.setPlaybackRate(rate),
               getCurrentTime: () => playerRef.current?.getCurrentTime?.() ?? 0,
             })
 

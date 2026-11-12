@@ -3,16 +3,25 @@ interface BeatCounterProps {
   currentTime: number
   offset: number
   defaultOffset: number
+  offsetVerificado: boolean
   onOffsetChange: (offset: number) => void
 }
 
-export function BeatCounter({ bpm, currentTime, offset, defaultOffset, onOffsetChange }: BeatCounterProps) {
+export function BeatCounter({
+  bpm,
+  currentTime,
+  offset,
+  defaultOffset,
+  offsetVerificado,
+  onOffsetChange,
+}: BeatCounterProps) {
   const beatDuration = 60 / bpm
   const elapsed = Math.max(0, currentTime - offset)
   const beatIndex = Math.floor(elapsed / beatDuration)
   const count = ((beatIndex % 8) + 8) % 8 + 1
   const esToque = count === 4 || count === 8
-  const esValorReal = Math.abs(offset - defaultOffset) < 0.001
+  const esValorPorDefecto = Math.abs(offset - defaultOffset) < 0.001
+  const esValorReal = offsetVerificado && esValorPorDefecto
 
   return (
     <div className="flex flex-wrap items-center gap-4 rounded-xl border border-white/10 bg-black/30 px-4 py-3">
@@ -33,7 +42,11 @@ export function BeatCounter({ bpm, currentTime, offset, defaultOffset, onOffsetC
       </div>
       <div className="ml-auto flex flex-col items-end gap-1">
         <span className="text-xs text-white/40">
-          {esValorReal ? '"1" = beat real medido' : '"1" calibrado a mano'}
+          {esValorReal
+            ? '"1" = beat real medido'
+            : esValorPorDefecto
+              ? '"1" sin verificar (offset 0)'
+              : '"1" calibrado a mano'}
         </span>
         <div className="flex items-center gap-1">
           <button
@@ -49,7 +62,7 @@ export function BeatCounter({ bpm, currentTime, offset, defaultOffset, onOffsetC
           >
             +0.05s
           </button>
-          {!esValorReal && (
+          {!esValorPorDefecto && offsetVerificado && (
             <button
               onClick={() => onOffsetChange(defaultOffset)}
               className="ml-1 rounded-md border border-sky-500/30 px-2 py-1 text-xs text-sky-300 hover:bg-sky-500/10"

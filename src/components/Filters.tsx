@@ -6,6 +6,7 @@ export interface FilterState {
   query: string
   estilo: EstiloRotura | 'todos'
   nivel: Song['nivel'] | 'todos'
+  artista: string
   bpmMin: number
   bpmMax: number
   soloFavoritos: boolean
@@ -15,9 +16,10 @@ export interface FilterState {
 interface FiltersProps {
   value: FilterState
   onChange: (value: FilterState) => void
+  artistas: string[]
 }
 
-export function Filters({ value, onChange }: FiltersProps) {
+export function Filters({ value, onChange, artistas }: FiltersProps) {
   return (
     <div className="flex flex-col gap-4 rounded-2xl border border-white/10 bg-white/[0.02] p-5">
       <label htmlFor="buscar" className="sr-only">
@@ -47,6 +49,25 @@ export function Filters({ value, onChange }: FiltersProps) {
             <option value="derecho">Derecho</option>
             <option value="majao">Majao</option>
             <option value="ambos">Derecho / Majao</option>
+          </select>
+        </div>
+
+        <div className="flex flex-col gap-1">
+          <label htmlFor="artista" className="text-xs text-white/50">
+            Cantante
+          </label>
+          <select
+            id="artista"
+            value={value.artista}
+            onChange={(e) => onChange({ ...value, artista: e.target.value })}
+            className="rounded-lg border border-white/15 bg-black/30 px-3 py-2 text-sm text-white outline-none focus:border-rose-500/60"
+          >
+            <option value="todos">Todos</option>
+            {artistas.map((a) => (
+              <option key={a} value={a}>
+                {a}
+              </option>
+            ))}
           </select>
         </div>
 

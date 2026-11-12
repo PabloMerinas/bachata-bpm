@@ -10,11 +10,14 @@ const initialFilters: FilterState = {
   query: '',
   estilo: 'todos',
   nivel: 'todos',
+  artista: 'todos',
   bpmMin: 100,
   bpmMax: 150,
   soloFavoritos: false,
   orden: 'titulo',
 }
+
+const artistas = Array.from(new Set(songs.map((s) => s.artist))).sort((a, b) => a.localeCompare(b))
 
 function songFromUrl(): Song | null {
   const params = new URLSearchParams(window.location.search)
@@ -53,6 +56,7 @@ function App() {
       if (q && !`${song.title} ${song.artist}`.toLowerCase().includes(q)) return false
       if (filters.estilo !== 'todos' && song.estilo !== filters.estilo) return false
       if (filters.nivel !== 'todos' && song.nivel !== filters.nivel) return false
+      if (filters.artista !== 'todos' && song.artist !== filters.artista) return false
       if (song.bpm < filters.bpmMin || song.bpm > filters.bpmMax) return false
       if (filters.soloFavoritos && !isFavorite(song.id)) return false
       return true
@@ -95,7 +99,7 @@ function App() {
         <AboutSection />
 
         <section className="mt-8">
-          <Filters value={filters} onChange={setFilters} />
+          <Filters value={filters} onChange={setFilters} artistas={artistas} />
         </section>
 
         <section className="mt-6">

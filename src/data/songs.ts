@@ -12,10 +12,10 @@ export interface Song {
   youtubeId: string
   /** BPM medido por análisis de audio real (AcousticBrainz/Essentia), redondeado para mostrar. */
   bpm: number
-  /** Primer beat detectado por el análisis de audio real, en segundos. Punto de partida real del contador, no una suposición. */
-  beatOffset: number
+  /** Primer beat detectado por el análisis de audio real, en segundos. Punto de partida real del contador, no una suposición. undefined si no hay análisis disponible para esta canción. */
+  beatOffset?: number
   fuenteBpm: Fuente
-  fuenteBeat: Fuente
+  fuenteBeat?: Fuente
   notaCalibrado?: string
   genero: string
   anio: number
@@ -250,5 +250,49 @@ export const songs: Song[] = [
     estilo: 'majao',
     notaEstilo: 'Fraseo vocal muy libre con pausas marcadas, típico de la bachata moderna donde el majao se apoya mejor en el silencio.',
     nivel: 'avanzado',
+  },
+  {
+    id: 'tu-veneno',
+    title: 'Tu Veneno',
+    artist: 'Héctor Acosta "El Torito"',
+    youtubeId: '7634eY2u6ew',
+    bpm: 130,
+    beatOffset: 0.488,
+    fuenteBpm: { nombre: 'Tunebat', url: 'https://tunebat.com/Info/Tu-Veneno-H-ctor-Acosta-El-Torito-/1QnFi4ONNMCWEOpXHwat2O' },
+    fuenteBeat: { nombre: 'AcousticBrainz', url: 'https://acousticbrainz.org/d092e3b1-068f-4662-8d4b-032873fcced6/low-level' },
+    genero: 'Bachata dominicana de salón',
+    anio: 2012,
+    estilo: 'derecho',
+    notaEstilo: 'Voz con mucho vibrato sobre una base muy regular: clásico de boda dominicana, se baila casi siempre derecho.',
+    nivel: 'intermedio',
+  },
+  {
+    id: 'tu-eres-ajena',
+    title: 'Tú Eres Ajena',
+    artist: 'Frank Reyes',
+    youtubeId: '0mFaIxl1wgQ',
+    bpm: 130,
+    beatOffset: 0.406,
+    fuenteBpm: { nombre: 'Tunebat', url: 'https://tunebat.com/Info/Tu-Eres-Ajena-Frank-Reyes/64zjvItFmkY8Q96tcmGQ6n' },
+    fuenteBeat: { nombre: 'AcousticBrainz', url: 'https://acousticbrainz.org/4f928e37-66cb-42aa-bd6a-90c4eb8a5e48/low-level' },
+    genero: 'Bachata dominicana de salón',
+    anio: 2007,
+    estilo: 'derecho',
+    notaEstilo: 'Letra muy popular en pista social; patrón de guira directo, ideal para derecho a tempo medio-alto.',
+    nivel: 'intermedio',
+  },
+  {
+    id: 'la-bachata',
+    title: 'La Bachata',
+    artist: 'Manuel Turizo',
+    youtubeId: 'A7m8lQOMz1A',
+    bpm: 125,
+    fuenteBpm: { nombre: 'Tunebat', url: 'https://tunebat.com/Info/La-Bachata-Manuel-Turizo/5ww2BF9slyYgNOk37BlC4u' },
+    notaCalibrado: 'No encontramos esta canción en la base de datos de beats reales (AcousticBrainz): el contador arranca en 0:00 sin verificar — calíbralo a oído con los botones de ±0.05s.',
+    genero: 'Bachata moderna / pop',
+    anio: 2022,
+    estilo: 'majao',
+    notaEstilo: 'Superéxito global de 2022 con producción muy pop; el fraseo relajado se presta a romper majao.',
+    nivel: 'principiante',
   },
 ]

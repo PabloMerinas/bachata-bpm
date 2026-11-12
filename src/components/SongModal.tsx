@@ -19,7 +19,7 @@ export function SongModal({ song, onClose }: SongModalProps) {
   const [currentTime, setCurrentTime] = useState(0)
   const [offset, setOffset] = useState(() => {
     const stored = localStorage.getItem(offsetKey(song.id))
-    return stored ? Number(stored) : song.beatOffset
+    return stored ? Number(stored) : (song.beatOffset ?? 0)
   })
   const [player, setPlayer] = useState<VideoPlayerHandle | null>(null)
   const [copied, setCopied] = useState(false)
@@ -130,7 +130,8 @@ export function SongModal({ song, onClose }: SongModalProps) {
             bpm={song.bpm}
             currentTime={currentTime}
             offset={offset}
-            defaultOffset={song.beatOffset}
+            defaultOffset={song.beatOffset ?? 0}
+            offsetVerificado={song.beatOffset !== undefined}
             onOffsetChange={setOffset}
           />
         </div>
@@ -152,14 +153,20 @@ export function SongModal({ song, onClose }: SongModalProps) {
           >
             BPM real · fuente: {song.fuenteBpm.nombre} ↗
           </a>
-          <a
-            href={song.fuenteBeat.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-full border border-sky-500/30 bg-sky-500/10 px-2.5 py-0.5 text-xs text-sky-300 hover:bg-sky-500/20"
-          >
-            Beat real · fuente: {song.fuenteBeat.nombre} ↗
-          </a>
+          {song.fuenteBeat ? (
+            <a
+              href={song.fuenteBeat.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-full border border-sky-500/30 bg-sky-500/10 px-2.5 py-0.5 text-xs text-sky-300 hover:bg-sky-500/20"
+            >
+              Beat real · fuente: {song.fuenteBeat.nombre} ↗
+            </a>
+          ) : (
+            <span className="rounded-full border border-white/10 px-2.5 py-0.5 text-xs text-white/40">
+              Beat sin verificar
+            </span>
+          )}
         </div>
 
         <p className="mt-3 text-sm leading-relaxed text-white/70">{song.notaEstilo}</p>
