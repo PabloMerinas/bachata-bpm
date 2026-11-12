@@ -127,19 +127,16 @@ export function SongModal({ song, onClose }: SongModalProps) {
           </div>
         </div>
 
-        <div className="mt-4">
+        <div className="relative mt-4">
           <VideoPlayer
             youtubeId={song.youtubeId}
             onTimeUpdate={setCurrentTime}
             onDuration={setDuration}
             onReady={setPlayer}
           />
-        </div>
-
-        <div className="mt-2 flex items-center justify-center gap-2 font-mono text-sm text-white/50">
-          <span>{formatTime(currentTime)}</span>
-          <span className="text-white/25">/</span>
-          <span>{formatTime(duration)}</span>
+          <div className="pointer-events-none absolute bottom-2 right-2 rounded-full border border-white/10 bg-black/60 px-2.5 py-1 font-mono text-xs text-white/70 backdrop-blur-sm">
+            {formatTime(currentTime)} / {formatTime(duration)}
+          </div>
         </div>
 
         {song.estructuraReal && duration > 0 && (
