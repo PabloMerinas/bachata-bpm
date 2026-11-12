@@ -15,6 +15,13 @@ function offsetKey(songId: string) {
   return `bachatabpm:offset:${songId}`
 }
 
+function formatTime(seconds: number) {
+  if (!isFinite(seconds) || seconds < 0) return '0:00'
+  const m = Math.floor(seconds / 60)
+  const s = Math.floor(seconds % 60)
+  return `${m}:${s.toString().padStart(2, '0')}`
+}
+
 export function SongModal({ song, onClose }: SongModalProps) {
   const [currentTime, setCurrentTime] = useState(0)
   const [duration, setDuration] = useState(0)
@@ -127,6 +134,12 @@ export function SongModal({ song, onClose }: SongModalProps) {
             onDuration={setDuration}
             onReady={setPlayer}
           />
+        </div>
+
+        <div className="mt-2 flex items-center justify-center gap-2 font-mono text-sm text-white/50">
+          <span>{formatTime(currentTime)}</span>
+          <span className="text-white/25">/</span>
+          <span>{formatTime(duration)}</span>
         </div>
 
         {song.estructuraReal && duration > 0 && (
