@@ -23,8 +23,11 @@ const ITEMS = [
 
 export function AboutSection() {
   return (
-    <section className="mt-8 rounded-2xl border border-white/10 bg-white/[0.02] p-5">
-      <h2 className="text-lg font-semibold text-white">Antes de empezar</h2>
+    <details className="group mt-8 rounded-2xl border border-white/10 bg-white/[0.02] p-5">
+      <summary className="flex cursor-pointer list-none items-center justify-between text-lg font-semibold text-white">
+        Antes de empezar
+        <span className="text-sm font-normal text-white/40 transition group-open:rotate-180">▾</span>
+      </summary>
       <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
         {ITEMS.map((item) => (
           <div key={item.title} className="rounded-xl border border-white/5 bg-black/20 p-4">
@@ -33,6 +36,6 @@ export function AboutSection() {
           </div>
         ))}
       </div>
-    </section>
+    </details>
   )
 }
