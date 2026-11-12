@@ -29,6 +29,18 @@ export interface Song {
    * explícitamente como experimental en vez de darlo por bueno.
    */
   experimental?: boolean
+  /**
+   * Lista completa de beats reales detectados en toda la canción (solo disponible cuando
+   * analizamos el archivo de audio entero, no un clip). Permite contar usando la posición
+   * real de cada beat en vez de una fórmula aproximada — elimina la deriva por redondeo.
+   */
+  beatsCompletos?: number[]
+  /**
+   * Índice (dentro de beatsCompletos) del beat elegido como "1", basado en qué posición del
+   * compás tiene más energía real medida (acento más fuerte) — una estimación razonada, no
+   * una certeza absoluta de que sea el "1" que cuenta un instructor.
+   */
+  beatsAnclaIdx?: number
   genero: string
   anio: number
   estilo: EstiloRotura
@@ -317,11 +329,13 @@ export const songs: Song[] = [
     artist: 'Manuel Turizo',
     youtubeId: 'A7m8lQOMz1A',
     bpm: 125,
-    beatOffset: 0.213,
+    beatOffset: 0,
     fuenteBpm: { nombre: 'Tunebat', url: 'https://tunebat.com/Info/La-Bachata-Manuel-Turizo/5ww2BF9slyYgNOk37BlC4u' },
     fuenteBeat: { nombre: 'Análisis propio sobre archivo completo (163s, mp3 propio)', url: 'https://www.youtube.com/watch?v=A7m8lQOMz1A' },
-    notaCalibrado: 'A diferencia de la versión "preview 30s", este offset viene de analizar la canción entera (163s) y comprobar que el tempo se mantiene estable casi todo el tiempo — más fiable que el análisis parcial. Compáralas entre sí.',
+    notaCalibrado: 'A diferencia de la versión "preview 30s", aquí usamos los 328 beats reales detectados en toda la canción (no una fórmula aproximada), y el "1" está anclado en la posición del compás con más energía real medida (el acento más fuerte) en vez de en el primer beat detectado. Sigue siendo una estimación razonada, no una certeza absoluta — compáralas entre sí.',
     experimental: true,
+    beatsAnclaIdx: 31,
+    beatsCompletos: [0.71,1.19,1.67,2.15,2.63,3.12,3.6,4.08,4.555,5.03,5.505,5.98,6.48,6.96,7.44,7.91,8.4,8.84,9.31,9.83,10.29,10.76,11.25,11.73,12.21,12.68,13.15,13.64,14.13,14.61,15.09,15.56,15.99,16.53,17.02,17.49,17.97,18.45,18.93,19.4,19.89,20.38,20.88,21.33,21.81,22.3,22.76,23.23,23.82,24.44,24.92,25.39,25.87,26.35,26.84,27.31,27.79,28.28,28.76,29.23,29.71,30.2,30.65,31.15,31.63,32.12,32.6,33.07,33.55,34.03,34.51,34.99,35.47,35.95,36.44,36.905,37.37,37.87,38.36,38.83,39.32,39.79,40.27,40.76,41.23,41.71,42.19,42.68,43.16,43.63,44.11,44.6,45.07,45.56,46.04,46.52,46.99,47.47,47.96,48.44,48.91,49.39,49.87,50.35,50.83,51.31,51.8,52.28,52.75,53.24,53.72,54.2,54.68,55.15,55.63,56.12,56.6,57.07,57.55,58.04,58.52,58.99,59.47,59.96,60.44,60.91,61.39,61.88,62.35,62.83,63.32,63.8,64.28,64.75,65.23,65.72,66.2,66.67,67.15,67.64,68.12,68.6,69.07,69.56,70.04,70.52,71.02,71.48,71.93,72.415,72.9,73.4,73.88,74.36,74.84,75.32,75.81,76.27,76.76,77.24,77.71,78.2,78.68,79.17,79.64,80.12,80.59,81.09,81.56,82.04,82.52,82.99,83.46,83.95,84.43,84.91,85.395,85.88,86.36,86.83,87.31,87.79,88.27,88.75,89.23,89.7,90.18,90.66,91.14,91.63,92.11,92.59,93.07,93.55,94.04,94.52,94.99,95.48,95.95,96.43,96.9,97.39,97.86,98.37,98.84,99.31,99.8,100.27,100.75,101.23,101.71,102.2,102.67,103.15,103.63,104.12,104.59,105.07,105.55,106.03,106.51,107,107.48,107.95,108.43,108.91,109.4,109.87,110.35,110.83,111.31,111.79,112.27,112.75,113.24,113.72,114.2,114.68,115.16,115.64,116.12,116.6,117.07,117.56,118.04,118.51,118.99,119.48,119.96,120.43,120.91,121.4,121.88,122.35,122.83,123.32,123.79,124.27,124.76,125.24,125.72,126.19,126.67,127.16,127.64,128.11,128.59,129.07,129.56,130.03,130.52,130.998,131.476,131.954,132.432,132.91,133.41,133.89,134.38,134.86,135.33,135.81,136.29,136.77,137.243,137.717,138.19,138.68,139.163,139.647,140.13,140.6,141.085,141.57,142.05,142.52,143.005,143.49,143.97,144.44,144.92,145.4,145.88,146.358,146.836,147.314,147.792,148.27,148.75,149.23,149.71,150.19,150.67,151.15,151.63,152.11,152.59,153.07,153.55,154.03,154.51,154.99,155.47,155.95,156.43,156.91,157.39,157.87],
     genero: 'Bachata moderna / pop',
     anio: 2022,
     estilo: 'majao',

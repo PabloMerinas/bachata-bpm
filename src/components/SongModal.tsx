@@ -138,6 +138,8 @@ export function SongModal({ song, onClose }: SongModalProps) {
             currentTime={currentTime}
             offset={offset}
             defaultOffset={song.beatOffset}
+            beatsCompletos={song.beatsCompletos}
+            beatsAnclaIdx={song.beatsAnclaIdx}
             onOffsetChange={setOffset}
           />
         </div>
