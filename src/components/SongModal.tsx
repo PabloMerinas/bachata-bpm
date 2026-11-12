@@ -1,14 +1,34 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import type { Song } from '../data/songs'
 import { StylePill } from './StylePill'
 import { Metronome } from './Metronome'
+import { VideoPlayer } from './VideoPlayer'
+import { BeatCounter } from './BeatCounter'
+import { Timeline } from './Timeline'
+import { generarEstructura } from '../lib/estructura'
 
 interface SongModalProps {
   song: Song
   onClose: () => void
 }
 
+function offsetKey(songId: string) {
+  return `bachatabpm:offset:${songId}`
+}
+
 export function SongModal({ song, onClose }: SongModalProps) {
+  const [currentTime, setCurrentTime] = useState(0)
+  const [duration, setDuration] = useState(0)
+  const [offset, setOffset] = useState(() => {
+    const stored = localStorage.getItem(offsetKey(song.id))
+    return stored ? Number(stored) : 0
+  })
+  const seekToRef = useRef<((seconds: number) => void) | null>(null)
+
+  useEffect(() => {
+    localStorage.setItem(offsetKey(song.id), String(offset))
+  }, [offset, song.id])
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose()
@@ -17,13 +37,18 @@ export function SongModal({ song, onClose }: SongModalProps) {
     return () => window.removeEventListener('keydown', onKey)
   }, [onClose])
 
+  const secciones = useMemo(
+    () => (duration > 0 ? generarEstructura(duration, song.estilo) : []),
+    [duration, song.estilo],
+  )
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4"
       onClick={onClose}
     >
       <div
-        className="w-full max-w-3xl rounded-2xl border border-white/10 bg-[#1b1016] p-6 shadow-2xl"
+        className="max-h-[92vh] w-full max-w-3xl overflow-y-auto rounded-2xl border border-white/10 bg-[#1b1016] p-6 shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-start justify-between gap-4">
@@ -39,17 +64,36 @@ export function SongModal({ song, onClose }: SongModalProps) {
           </button>
         </div>
 
-        <div className="mt-4 aspect-video w-full overflow-hidden rounded-xl border border-white/10 bg-black">
-          <iframe
-            className="h-full w-full"
-            src={`https://www.youtube.com/embed/${song.youtubeId}`}
-            title={`${song.title} - ${song.artist}`}
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
+        <div className="mt-4">
+          <VideoPlayer
+            youtubeId={song.youtubeId}
+            onTimeUpdate={setCurrentTime}
+            onDuration={setDuration}
+            seekToRef={seekToRef}
           />
         </div>
 
-        <div className="mt-5">
+        {secciones.length > 0 && (
+          <div className="mt-4">
+            <Timeline
+              secciones={secciones}
+              duracion={duration}
+              currentTime={currentTime}
+              onSeek={(s) => seekToRef.current?.(s)}
+            />
+          </div>
+        )}
+
+        <div className="mt-4">
+          <BeatCounter
+            bpm={song.bpm}
+            currentTime={currentTime}
+            offset={offset}
+            onOffsetChange={setOffset}
+          />
+        </div>
+
+        <div className="mt-4">
           <Metronome bpm={song.bpm} />
         </div>
 
@@ -68,9 +112,11 @@ export function SongModal({ song, onClose }: SongModalProps) {
         <p className="mt-3 text-sm leading-relaxed text-white/70">{song.notaEstilo}</p>
 
         <p className="mt-4 text-xs text-white/35">
-          El BPM y el estilo de rotura son orientativos, pensados como punto de partida para practicar —
-          no sustituyen lo que te diga tu instructor. La reproducción se hace vía YouTube, el audio no se
-          aloja en esta web.
+          El BPM, el estilo de rotura y la estructura son orientativos, pensados como punto de
+          partida para practicar — no sustituyen lo que te diga tu instructor. El contador de
+          tiempo asume que el BPM es correcto; usa la calibración si el "1" no coincide con el
+          acento real de la canción. La reproducción se hace vía YouTube, el audio no se aloja en
+          esta web.
         </p>
       </div>
     </div>
