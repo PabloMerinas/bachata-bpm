@@ -1,14 +1,20 @@
 import { useEffect, useRef, useState } from 'react'
 import { loadYouTubeApi } from '../lib/youtube'
 
+export interface VideoPlayerHandle {
+  seekTo: (seconds: number) => void
+  setPlaybackRate: (rate: number) => void
+  getCurrentTime: () => number
+}
+
 interface VideoPlayerProps {
   youtubeId: string
   onTimeUpdate: (currentTime: number) => void
   onDuration: (duration: number) => void
-  seekToRef?: React.MutableRefObject<((seconds: number) => void) | null>
+  onReady?: (handle: VideoPlayerHandle) => void
 }
 
-export function VideoPlayer({ youtubeId, onTimeUpdate, onDuration, seekToRef }: VideoPlayerProps) {
+export function VideoPlayer({ youtubeId, onTimeUpdate, onDuration, onReady }: VideoPlayerProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const playerRef = useRef<any>(null)
   const rafRef = useRef<number | null>(null)
@@ -30,6 +36,12 @@ export function VideoPlayer({ youtubeId, onTimeUpdate, onDuration, seekToRef }: 
             const duration = playerRef.current.getDuration()
             if (duration) onDuration(duration)
 
+            onReady?.({
+              seekTo: (seconds: number) => playerRef.current?.seekTo(seconds, true),
+              setPlaybackRate: (rate: number) => playerRef.current?.setPlaybackRate(rate),
+              getCurrentTime: () => playerRef.current?.getCurrentTime?.() ?? 0,
+            })
+
             const tick = () => {
               if (playerRef.current?.getCurrentTime) {
                 onTimeUpdate(playerRef.current.getCurrentTime())
@@ -44,17 +56,10 @@ export function VideoPlayer({ youtubeId, onTimeUpdate, onDuration, seekToRef }: 
       })
     })
 
-    if (seekToRef) {
-      seekToRef.current = (seconds: number) => {
-        playerRef.current?.seekTo(seconds, true)
-      }
-    }
-
     return () => {
       cancelled = true
       if (rafRef.current) cancelAnimationFrame(rafRef.current)
       playerRef.current?.destroy?.()
-      if (seekToRef) seekToRef.current = null
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [youtubeId])

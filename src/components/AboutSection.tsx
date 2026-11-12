@@ -1,0 +1,34 @@
+const ITEMS = [
+  {
+    title: '¿Qué es el BPM?',
+    body: 'Beats por minuto: cuántos pulsos tiene la canción en 60 segundos. En bachata, cuanto más alto el BPM, más rápido tienes que mover los pies para seguir el paso básico de 8 tiempos.',
+  },
+  {
+    title: '¿Derecho o majao?',
+    body: 'Son dos formas de marcar la rotura del paso básico (hacia qué lado y en qué tiempo rompes). No es una propiedad física del audio — es una decisión de técnica del bailarín, aunque el acento de la guira/bajo de cada canción suele hacer que una de las dos se sienta más natural. Por eso aquí se presenta como sugerencia pedagógica, no como un hecho medido.',
+  },
+  {
+    title: '¿Qué es el "mambo"?',
+    body: 'El tramo instrumental de muchas bachatas (sin voz, con la guira y el bongó más protagonistas) donde se suele soltar el paso básico y lucir pasos sueltos o shines. Reconocerlo de oído es una habilidad en sí misma.',
+  },
+  {
+    title: '¿Cómo uso el contador 1-8?',
+    body: 'Abre una canción, dale a reproducir en YouTube y mira el número grande: va sincronizado al BPM real de la canción. Si notas que el "1" no cae donde tú sientes el acento, usa los botones de calibración (±0.05s) hasta que encaje — queda guardado para esa canción.',
+  },
+]
+
+export function AboutSection() {
+  return (
+    <section className="mt-8 rounded-2xl border border-white/10 bg-white/[0.02] p-5">
+      <h2 className="text-lg font-semibold text-white">Antes de empezar</h2>
+      <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+        {ITEMS.map((item) => (
+          <div key={item.title} className="rounded-xl border border-white/5 bg-black/20 p-4">
+            <h3 className="text-sm font-semibold text-rose-300">{item.title}</h3>
+            <p className="mt-1.5 text-sm leading-relaxed text-white/60">{item.body}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+}

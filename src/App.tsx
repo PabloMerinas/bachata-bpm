@@ -3,6 +3,7 @@ import { songs, type Song } from './data/songs'
 import { SongCard } from './components/SongCard'
 import { SongModal } from './components/SongModal'
 import { Filters, type FilterState } from './components/Filters'
+import { AboutSection } from './components/AboutSection'
 
 const initialFilters: FilterState = {
   query: '',
@@ -53,6 +54,8 @@ function App() {
           </p>
         </header>
 
+        <AboutSection />
+
         <section className="mt-8">
           <Filters value={filters} onChange={setFilters} />
         </section>
@@ -73,10 +76,11 @@ function App() {
 
         <footer className="mt-16 border-t border-white/10 pt-6 text-center text-xs text-white/35">
           <p>
-            Los datos de BPM y estilo de rotura son orientativos (estimados a partir del género y
-            el tempo), pensados como punto de partida para practicar — contrastalos siempre con tu
-            instructor. La reproducción de las canciones se realiza mediante el reproductor oficial
-            de YouTube; esta web no aloja ni distribuye audio.
+            El BPM de cada canción es un dato real citado de bases de datos públicas de análisis de
+            audio (Tunebat / Shazam — enlace en cada ficha); puede variar ±1-2 BPM entre fuentes. El
+            estilo de rotura (derecho/majao) es una sugerencia pedagógica, no una propiedad medible
+            del audio — contrástala siempre con tu instructor. La reproducción de las canciones se
+            realiza mediante el reproductor oficial de YouTube; esta web no aloja ni distribuye audio.
           </p>
           <p className="mt-2">Hecho con cariño por un aprendiz de bachata.</p>
         </footer>
