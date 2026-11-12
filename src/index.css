@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+:root {
+  color-scheme: dark;
+}
+
+html, body {
+  margin: 0;
+  background: #140c10;
+}
+
+#root {
+  min-height: 100svh;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, Roboto, sans-serif;
+}
+
+@keyframes pulse-beat {
+  0% { transform: scale(1); opacity: 1; }
+  15% { transform: scale(1.35); opacity: 1; }
+  100% { transform: scale(1); opacity: 0.55; }
+}
+
+.beat-dot {
+  animation: pulse-beat var(--beat-duration, 0.5s) ease-out infinite;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #1f1420;
+}
+::-webkit-scrollbar-thumb {
+  background: #5a2a3a;
+  border-radius: 8px;
+}
