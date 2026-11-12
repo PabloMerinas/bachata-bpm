@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { Song } from '../data/songs'
 import { StylePill } from './StylePill'
 import { Metronome } from './Metronome'
@@ -22,18 +22,56 @@ export function SongModal({ song, onClose }: SongModalProps) {
     return stored ? Number(stored) : 0
   })
   const [player, setPlayer] = useState<VideoPlayerHandle | null>(null)
+  const [copied, setCopied] = useState(false)
+  const dialogRef = useRef<HTMLDivElement>(null)
+  const closeButtonRef = useRef<HTMLButtonElement>(null)
+  const previouslyFocused = useRef<Element | null>(null)
 
   useEffect(() => {
     localStorage.setItem(offsetKey(song.id), String(offset))
   }, [offset, song.id])
 
   useEffect(() => {
+    previouslyFocused.current = document.activeElement
+    closeButtonRef.current?.focus()
+    return () => {
+      if (previouslyFocused.current instanceof HTMLElement) {
+        previouslyFocused.current.focus()
+      }
+    }
+  }, [])
+
+  useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose()
+      if (e.key === 'Escape') {
+        onClose()
+        return
+      }
+      if (e.key === 'Tab' && dialogRef.current) {
+        const focusables = dialogRef.current.querySelectorAll<HTMLElement>(
+          'button, a[href], input, select, [tabindex]:not([tabindex="-1"])',
+        )
+        if (focusables.length === 0) return
+        const first = focusables[0]
+        const last = focusables[focusables.length - 1]
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault()
+          last.focus()
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault()
+          first.focus()
+        }
+      }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [onClose])
+
+  const copyLink = async () => {
+    await navigator.clipboard.writeText(window.location.href)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 1500)
+  }
 
   return (
     <div
@@ -41,20 +79,37 @@ export function SongModal({ song, onClose }: SongModalProps) {
       onClick={onClose}
     >
       <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="song-modal-title"
         className="max-h-[94vh] w-full max-w-3xl overflow-y-auto rounded-2xl border border-white/10 bg-[#1b1016] p-4 shadow-2xl sm:p-6"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h2 className="text-xl font-semibold text-white sm:text-2xl">{song.title}</h2>
+            <h2 id="song-modal-title" className="text-xl font-semibold text-white sm:text-2xl">
+              {song.title}
+            </h2>
             <p className="text-sm text-white/55 sm:text-base">{song.artist} · {song.genero} · {song.anio}</p>
           </div>
-          <button
-            onClick={onClose}
-            className="shrink-0 rounded-lg border border-white/10 px-3 py-1 text-white/60 hover:bg-white/10 hover:text-white"
-          >
-            Cerrar
-          </button>
+          <div className="flex shrink-0 items-center gap-2">
+            <button
+              onClick={copyLink}
+              aria-label="Copiar enlace directo a esta canción"
+              className="rounded-lg border border-white/10 px-3 py-1 text-white/60 hover:bg-white/10 hover:text-white"
+            >
+              {copied ? '¡Copiado!' : 'Compartir'}
+            </button>
+            <button
+              ref={closeButtonRef}
+              onClick={onClose}
+              aria-label="Cerrar ficha de la canción"
+              className="rounded-lg border border-white/10 px-3 py-1 text-white/60 hover:bg-white/10 hover:text-white"
+            >
+              Cerrar
+            </button>
+          </div>
         </div>
 
         <div className="mt-4">

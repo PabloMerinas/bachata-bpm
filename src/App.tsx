@@ -1,9 +1,10 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { songs, type Song } from './data/songs'
 import { SongCard } from './components/SongCard'
 import { SongModal } from './components/SongModal'
 import { Filters, type FilterState } from './components/Filters'
 import { AboutSection } from './components/AboutSection'
+import { useFavorites } from './lib/favorites'
 
 const initialFilters: FilterState = {
   query: '',
@@ -11,21 +12,58 @@ const initialFilters: FilterState = {
   nivel: 'todos',
   bpmMin: 100,
   bpmMax: 150,
+  soloFavoritos: false,
+  orden: 'titulo',
+}
+
+function songFromUrl(): Song | null {
+  const params = new URLSearchParams(window.location.search)
+  const id = params.get('cancion')
+  return songs.find((s) => s.id === id) ?? null
 }
 
 function App() {
   const [filters, setFilters] = useState<FilterState>(initialFilters)
-  const [selected, setSelected] = useState<Song | null>(null)
+  const [selected, setSelected] = useState<Song | null>(() => songFromUrl())
+  const { isFavorite, toggle } = useFavorites()
+
+  useEffect(() => {
+    const onPopState = () => setSelected(songFromUrl())
+    window.addEventListener('popstate', onPopState)
+    return () => window.removeEventListener('popstate', onPopState)
+  }, [])
+
+  const openSong = (song: Song) => {
+    setSelected(song)
+    const url = new URL(window.location.href)
+    url.searchParams.set('cancion', song.id)
+    window.history.pushState({}, '', url)
+  }
+
+  const closeSong = () => {
+    setSelected(null)
+    const url = new URL(window.location.href)
+    url.searchParams.delete('cancion')
+    window.history.pushState({}, '', url)
+  }
 
   const filtered = useMemo(() => {
     const q = filters.query.trim().toLowerCase()
-    return songs.filter((song) => {
+    const result = songs.filter((song) => {
       if (q && !`${song.title} ${song.artist}`.toLowerCase().includes(q)) return false
       if (filters.estilo !== 'todos' && song.estilo !== filters.estilo) return false
       if (filters.nivel !== 'todos' && song.nivel !== filters.nivel) return false
       if (song.bpm < filters.bpmMin || song.bpm > filters.bpmMax) return false
+      if (filters.soloFavoritos && !isFavorite(song.id)) return false
       return true
     })
+
+    if (filters.orden === 'bpm-asc') result.sort((a, b) => a.bpm - b.bpm)
+    else if (filters.orden === 'bpm-desc') result.sort((a, b) => b.bpm - a.bpm)
+    else result.sort((a, b) => a.title.localeCompare(b.title))
+
+    return result
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters])
 
   return (
@@ -38,15 +76,15 @@ function App() {
         }}
       />
 
-      <div className="relative mx-auto max-w-6xl px-6 py-10">
+      <div className="relative mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10">
         <header className="flex flex-col gap-3 text-center">
           <span className="mx-auto rounded-full border border-rose-500/30 bg-rose-500/10 px-3 py-1 text-xs font-medium text-rose-300">
             Catálogo para practicar bachata
           </span>
-          <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
+          <h1 className="text-3xl font-bold tracking-tight sm:text-5xl">
             Bachata<span className="text-rose-400">BPM</span>
           </h1>
-          <p className="mx-auto max-w-xl text-white/60">
+          <p className="mx-auto max-w-xl text-sm text-white/60 sm:text-base">
             Encuentra el tempo exacto de tus canciones favoritas, descubre si se bailan
             más natural en <strong className="text-amber-300">derecho</strong> o{' '}
             <strong className="text-fuchsia-300">majao</strong>, y practica con un metrónomo
@@ -68,7 +106,13 @@ function App() {
           ) : (
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {filtered.map((song) => (
-                <SongCard key={song.id} song={song} onOpen={setSelected} />
+                <SongCard
+                  key={song.id}
+                  song={song}
+                  onOpen={openSong}
+                  isFavorite={isFavorite(song.id)}
+                  onToggleFavorite={toggle}
+                />
               ))}
             </div>
           )}
@@ -86,7 +130,7 @@ function App() {
         </footer>
       </div>
 
-      {selected && <SongModal song={selected} onClose={() => setSelected(null)} />}
+      {selected && <SongModal song={selected} onClose={closeSong} />}
     </div>
   )
 }
