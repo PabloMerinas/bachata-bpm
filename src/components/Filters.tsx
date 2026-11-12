@@ -1,10 +1,9 @@
-import type { EstiloRotura, Song } from '../data/songs'
+import type { Song } from '../data/songs'
 
 export type Orden = 'titulo' | 'bpm-asc' | 'bpm-desc'
 
 export interface FilterState {
   query: string
-  estilo: EstiloRotura | 'todos'
   nivel: Song['nivel'] | 'todos'
   artista: string
   bpmMin: number
@@ -36,23 +35,6 @@ export function Filters({ value, onChange, artistas }: FiltersProps) {
       />
 
       <div className="flex flex-wrap gap-4">
-        <div className="flex flex-col gap-1">
-          <label htmlFor="estilo" className="text-xs text-white/50">
-            Estilo de rotura
-          </label>
-          <select
-            id="estilo"
-            value={value.estilo}
-            onChange={(e) => onChange({ ...value, estilo: e.target.value as FilterState['estilo'] })}
-            className="rounded-lg border border-white/15 bg-black/30 px-3 py-2 text-sm text-white outline-none focus:border-rose-500/60"
-          >
-            <option value="todos">Todos</option>
-            <option value="derecho">Derecho</option>
-            <option value="majao">Majao</option>
-            <option value="ambos">Derecho / Majao</option>
-          </select>
-        </div>
-
         <div className="flex flex-col gap-1">
           <label htmlFor="artista" className="text-xs text-white/50">
             Cantante

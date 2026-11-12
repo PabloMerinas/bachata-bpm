@@ -5,7 +5,7 @@ const ITEMS = [
   },
   {
     title: '¿Derecho o majao?',
-    body: 'Son dos formas de marcar la rotura del paso básico (hacia qué lado y en qué tiempo rompes). No es una propiedad física del audio — es una decisión de técnica del bailarín, aunque el acento de la guira/bajo de cada canción suele hacer que una de las dos se sienta más natural. Por eso aquí se presenta como sugerencia pedagógica, no como un hecho medido.',
+    body: 'Son dos formas de marcar la rotura del paso básico (hacia qué lado y en qué tiempo rompes). No es una propiedad física del audio ni una categoría fija de la canción — es una decisión de técnica del bailarín que normalmente cambia varias veces dentro de la misma canción (verso, coro, puente...). Por eso ya no verás una sola etiqueta por canción: la nota de cada ficha señala un momento concreto donde una de las dos se siente más natural, no toda la canción entera.',
   },
   {
     title: '¿Qué es el "mambo"?',

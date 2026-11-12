@@ -8,7 +8,6 @@ import { useFavorites } from './lib/favorites'
 
 const initialFilters: FilterState = {
   query: '',
-  estilo: 'todos',
   nivel: 'todos',
   artista: 'todos',
   bpmMin: 100,
@@ -55,7 +54,6 @@ function App() {
     const q = filters.query.trim().toLowerCase()
     const result = songs.filter((song) => {
       if (q && !`${song.title} ${song.artist}`.toLowerCase().includes(q)) return false
-      if (filters.estilo !== 'todos' && song.estilo !== filters.estilo) return false
       if (filters.nivel !== 'todos' && song.nivel !== filters.nivel) return false
       if (filters.artista !== 'todos' && song.artist !== filters.artista) return false
       if (song.bpm < filters.bpmMin || song.bpm > filters.bpmMax) return false
@@ -91,10 +89,10 @@ function App() {
             Bachata<span className="text-rose-400">BPM</span>
           </h1>
           <p className="mx-auto max-w-xl text-sm text-white/60 sm:text-base">
-            Encuentra el tempo exacto de tus canciones favoritas, descubre si se bailan
-            más natural en <strong className="text-amber-300">derecho</strong> o{' '}
-            <strong className="text-fuchsia-300">majao</strong>, y practica con un metrónomo
-            sincronizado antes de llevarlo a la pista.
+            Encuentra el tempo exacto de tus canciones favoritas y practica con un metrónomo y un
+            contador de tiempo sincronizados antes de llevarlo a la pista. También verás ideas
+            sobre cuándo cada canción se presta más a <strong className="text-amber-300">derecho</strong> o{' '}
+            <strong className="text-fuchsia-300">majao</strong> — aunque, como en toda bachata, lo normal es mezclar ambos dentro de la misma canción.
           </p>
         </header>
 
@@ -130,10 +128,10 @@ function App() {
             viene citado de bases de datos públicas (Tunebat / Shazam) y el beat se calculó
             analizando el audio real con AcousticBrainz/Essentia — no es una suposición a 0. Aun
             así puede no encajar al 100% si tu vídeo usa otra mezcla; por eso hay calibración
-            manual. El estilo de rotura (derecho/majao) sigue siendo una sugerencia pedagógica, no
-            una propiedad medible del audio — contrástala siempre con tu instructor. La
-            reproducción se realiza mediante el reproductor oficial de YouTube; esta web no aloja
-            ni distribuye audio.
+            manual. Las notas sobre derecho/majao son sugerencias orientativas para un momento
+            concreto, no una etiqueta fija de toda la canción — una misma canción suele combinar
+            ambos varios veces; contrástalo siempre con tu instructor. La reproducción se realiza
+            mediante el reproductor oficial de YouTube; esta web no aloja ni distribuye audio.
           </p>
           <p className="mt-2">Hecho con cariño por un aprendiz de bachata.</p>
         </footer>

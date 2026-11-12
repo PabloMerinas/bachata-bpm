@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
 import type { Song } from '../data/songs'
-import { StylePill } from './StylePill'
 import { Metronome } from './Metronome'
 import { VideoPlayer, type VideoPlayerHandle } from './VideoPlayer'
 import { BeatCounter } from './BeatCounter'
@@ -149,7 +148,6 @@ export function SongModal({ song, onClose }: SongModalProps) {
         </div>
 
         <div className="mt-5 flex flex-wrap items-center gap-2">
-          <StylePill estilo={song.estilo} />
           <span className="rounded-full border border-white/10 px-2.5 py-0.5 text-xs text-white/50">
             Nivel: {song.nivel}
           </span>
@@ -199,9 +197,11 @@ export function SongModal({ song, onClose }: SongModalProps) {
           grabación (AcousticBrainz, o análisis propio en las marcadas como experimentales — enlaces
           arriba) — no es una suposición a 0. Aun así puede no encajar exactamente con el vídeo
           embebido si usa una mezcla o edición distinta a la analizada; por eso la calibración
-          manual sigue disponible. El estilo de rotura (derecho/majao) es una sugerencia
-          pedagógica, no una propiedad medible del audio — contrástala siempre con tu instructor.
-          La reproducción se hace vía YouTube, el audio no se aloja en esta web.
+          manual sigue disponible. La nota de arriba sobre derecho/majao es solo una sugerencia
+          orientativa para un momento concreto de la canción — en la práctica una misma canción
+          puede combinar ambos varias veces, así que no la tomes como una etiqueta fija de toda la
+          canción; contrástalo siempre con tu instructor. La reproducción se hace vía YouTube, el
+          audio no se aloja en esta web.
         </p>
       </div>
     </div>

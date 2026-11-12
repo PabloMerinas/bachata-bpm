@@ -1,5 +1,4 @@
 import type { Song } from '../data/songs'
-import { StylePill } from './StylePill'
 import { BeatDot } from './BeatDot'
 
 interface SongCardProps {
@@ -34,7 +33,7 @@ export function SongCard({ song, onOpen, isFavorite, onToggleFavorite }: SongCar
 
       <button
         onClick={() => onOpen(song)}
-        aria-label={`Abrir ${song.title} de ${song.artist}, ${song.bpm} BPM, rotura ${song.estilo}`}
+        aria-label={`Abrir ${song.title} de ${song.artist}, ${song.bpm} BPM`}
         className="flex flex-col gap-3 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 rounded-xl"
       >
         <div className="flex items-start justify-between gap-3 pr-6">
@@ -59,7 +58,6 @@ export function SongCard({ song, onOpen, isFavorite, onToggleFavorite }: SongCar
           <span className="rounded-full border border-white/15 bg-black/30 px-2.5 py-0.5 text-xs font-mono text-rose-300">
             {song.bpm} BPM
           </span>
-          <StylePill estilo={song.estilo} />
           <span className="rounded-full border border-white/10 px-2.5 py-0.5 text-xs text-white/50">
             {NIVEL_LABEL[song.nivel]}
           </span>
