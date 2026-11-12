@@ -2,18 +2,20 @@ interface BeatCounterProps {
   bpm: number
   currentTime: number
   offset: number
+  defaultOffset: number
   onOffsetChange: (offset: number) => void
 }
 
-export function BeatCounter({ bpm, currentTime, offset, onOffsetChange }: BeatCounterProps) {
+export function BeatCounter({ bpm, currentTime, offset, defaultOffset, onOffsetChange }: BeatCounterProps) {
   const beatDuration = 60 / bpm
   const elapsed = Math.max(0, currentTime - offset)
   const beatIndex = Math.floor(elapsed / beatDuration)
   const count = ((beatIndex % 8) + 8) % 8 + 1
   const esToque = count === 4 || count === 8
+  const esValorReal = Math.abs(offset - defaultOffset) < 0.001
 
   return (
-    <div className="flex items-center gap-4 rounded-xl border border-white/10 bg-black/30 px-4 py-3">
+    <div className="flex flex-wrap items-center gap-4 rounded-xl border border-white/10 bg-black/30 px-4 py-3">
       <div
         className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-full border-2 text-2xl font-bold transition-colors ${
           esToque
@@ -30,7 +32,9 @@ export function BeatCounter({ bpm, currentTime, offset, onOffsetChange }: BeatCo
         </span>
       </div>
       <div className="ml-auto flex flex-col items-end gap-1">
-        <span className="text-xs text-white/40">Calibrar inicio del 1</span>
+        <span className="text-xs text-white/40">
+          {esValorReal ? '"1" = beat real medido' : '"1" calibrado a mano'}
+        </span>
         <div className="flex items-center gap-1">
           <button
             onClick={() => onOffsetChange(offset - 0.05)}
@@ -45,6 +49,14 @@ export function BeatCounter({ bpm, currentTime, offset, onOffsetChange }: BeatCo
           >
             +0.05s
           </button>
+          {!esValorReal && (
+            <button
+              onClick={() => onOffsetChange(defaultOffset)}
+              className="ml-1 rounded-md border border-sky-500/30 px-2 py-1 text-xs text-sky-300 hover:bg-sky-500/10"
+            >
+              Restablecer
+            </button>
+          )}
         </div>
       </div>
     </div>

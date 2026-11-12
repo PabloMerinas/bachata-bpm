@@ -19,7 +19,7 @@ export function SongModal({ song, onClose }: SongModalProps) {
   const [currentTime, setCurrentTime] = useState(0)
   const [offset, setOffset] = useState(() => {
     const stored = localStorage.getItem(offsetKey(song.id))
-    return stored ? Number(stored) : 0
+    return stored ? Number(stored) : song.beatOffset
   })
   const [player, setPlayer] = useState<VideoPlayerHandle | null>(null)
   const [copied, setCopied] = useState(false)
@@ -130,6 +130,7 @@ export function SongModal({ song, onClose }: SongModalProps) {
             bpm={song.bpm}
             currentTime={currentTime}
             offset={offset}
+            defaultOffset={song.beatOffset}
             onOffsetChange={setOffset}
           />
         </div>
@@ -151,17 +152,33 @@ export function SongModal({ song, onClose }: SongModalProps) {
           >
             BPM real · fuente: {song.fuenteBpm.nombre} ↗
           </a>
+          <a
+            href={song.fuenteBeat.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-full border border-sky-500/30 bg-sky-500/10 px-2.5 py-0.5 text-xs text-sky-300 hover:bg-sky-500/20"
+          >
+            Beat real · fuente: {song.fuenteBeat.nombre} ↗
+          </a>
         </div>
 
         <p className="mt-3 text-sm leading-relaxed text-white/70">{song.notaEstilo}</p>
 
+        {song.notaCalibrado && (
+          <p className="mt-2 rounded-lg border border-amber-500/20 bg-amber-500/5 px-3 py-2 text-xs text-amber-200/80">
+            ⚠ {song.notaCalibrado}
+          </p>
+        )}
+
         <p className="mt-4 text-xs text-white/35">
-          El BPM es un dato real tomado de una base de datos pública de análisis de audio (enlace
-          arriba); puede variar ±1-2 BPM entre bases de datos distintas. El estilo de rotura
-          (derecho/majao) es una sugerencia pedagógica, no una propiedad medible del audio —
-          contrástala siempre con tu instructor. El contador de tiempo asume que el BPM es
-          correcto; usa la calibración si el "1" no coincide con el acento real. La reproducción
-          se hace vía YouTube, el audio no se aloja en esta web.
+          El BPM y el instante inicial del "1" (offset) son datos reales: el BPM viene citado de
+          una base de datos pública de audio y el offset se calculó analizando el beat real de la
+          grabación con AcousticBrainz/Essentia (enlaces arriba) — no es una suposición a 0.
+          Aun así puede no encajar exactamente con el vídeo embebido si usa una mezcla o edición
+          distinta a la analizada; por eso la calibración manual sigue disponible. El estilo de
+          rotura (derecho/majao) es una sugerencia pedagógica, no una propiedad medible del audio
+          — contrástala siempre con tu instructor. La reproducción se hace vía YouTube, el audio
+          no se aloja en esta web.
         </p>
       </div>
     </div>

@@ -13,7 +13,7 @@ const ITEMS = [
   },
   {
     title: '¿Cómo uso el contador 1-8?',
-    body: 'Abre una canción, dale a reproducir en YouTube y mira el número grande: va sincronizado al BPM real de la canción. Si notas que el "1" no cae donde tú sientes el acento, usa los botones de calibración (±0.05s) hasta que encaje — queda guardado para esa canción.',
+    body: 'Abre una canción y dale a reproducir en YouTube: el número grande arranca ya calibrado con el primer beat real detectado por un análisis de audio (AcousticBrainz), no con una suposición a 0. Si tu vídeo usa otra mezcla y el "1" no encaja del todo, ajústalo con los botones de ±0.05s — queda guardado para esa canción, y puedes restablecer el valor real cuando quieras.',
   },
 ]
 

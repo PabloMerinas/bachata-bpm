@@ -120,17 +120,20 @@ function App() {
 
         <footer className="mt-16 border-t border-white/10 pt-6 text-center text-xs text-white/35">
           <p>
-            El BPM de cada canción es un dato real citado de bases de datos públicas de análisis de
-            audio (Tunebat / Shazam — enlace en cada ficha); puede variar ±1-2 BPM entre fuentes. El
-            estilo de rotura (derecho/majao) es una sugerencia pedagógica, no una propiedad medible
-            del audio — contrástala siempre con tu instructor. La reproducción de las canciones se
-            realiza mediante el reproductor oficial de YouTube; esta web no aloja ni distribuye audio.
+            El BPM y el instante del primer beat ("1") de cada canción son datos reales: el BPM
+            viene citado de bases de datos públicas (Tunebat / Shazam) y el beat se calculó
+            analizando el audio real con AcousticBrainz/Essentia — no es una suposición a 0. Aun
+            así puede no encajar al 100% si tu vídeo usa otra mezcla; por eso hay calibración
+            manual. El estilo de rotura (derecho/majao) sigue siendo una sugerencia pedagógica, no
+            una propiedad medible del audio — contrástala siempre con tu instructor. La
+            reproducción se realiza mediante el reproductor oficial de YouTube; esta web no aloja
+            ni distribuye audio.
           </p>
           <p className="mt-2">Hecho con cariño por un aprendiz de bachata.</p>
         </footer>
       </div>
 
-      {selected && <SongModal song={selected} onClose={closeSong} />}
+      {selected && <SongModal key={selected.id} song={selected} onClose={closeSong} />}
     </div>
   )
 }
