@@ -98,9 +98,7 @@ function App() {
           </h1>
           <p className="mx-auto max-w-xl text-sm text-white/60 sm:text-base">
             Encuentra el tempo exacto de tus canciones favoritas y practica con un metrónomo y un
-            contador de tiempo sincronizados antes de llevarlo a la pista. También verás ideas
-            sobre cuándo cada canción se presta más a <strong className="text-amber-300">derecho</strong> o{' '}
-            <strong className="text-fuchsia-300">majao</strong> — aunque, como en toda bachata, lo normal es mezclar ambos dentro de la misma canción.
+            contador de tiempo sincronizados antes de llevarlo a la pista.
           </p>
         </header>
 
